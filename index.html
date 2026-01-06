@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>FaSTI - Sistem Administrasi Non-Akademik</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #eef1f4;
+}
+
+header {
+  background: #2c3e50;
+  color: white;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+nav {
+  background: #f0f2f5;
+  padding: 10px;
+}
+
+nav a {
+  margin-right: 15px;
+  text-decoration: none;
+  color: #333;
+  cursor: pointer;
+}
+
+main {
+  padding: 20px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  max-width: 750px;
+  margin: auto;
+}
+
+button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 10px;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.breadcrumb {
+  margin-bottom: 15px;
+  color: #555;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #fff;
+  margin-top: 20px;
+  font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+    <div class="logo">
+        <h2>FaSTI - Sistem Administrasi Non-Akademik</h2>
+        <small>Fakultas Sains dan Teknologi Informasi,</small>
+        <small>Universitas Widyagama Malang</small>
+    </div>
+    <nav>
+        <a href="#">Beranda</a>
+        <a href="#">Lacak Pengajuan</a>
+    </nav>
+</header>
+
+<nav>
+  <a onclick="showPage('beranda')">Beranda</a>
+  <a onclick="showPage('izin')">Layanan</a>
+</nav>
+
+<main>
+
+<!-- ================= BERANDA ================= -->
+<section id="beranda" class="card">
+  <h2>Selamat Datang</h2>
+  <p>
+    Portal layanan mahasiswa untuk pengajuan administrasi non-akademik.
+  </p>
+  <button onclick="showPage('izin')">Lihat Layanan</button>
+</section>
+
+<!-- ================= IZIN KEGIATAN ================= -->
+<section id="izin" class="card hidden">
+  <div class="breadcrumb">
+    Beranda / Surat Menyurat
+  </div>
+
+  <h2>Surat Menyurat</h2>
+  <p>Pembuatan berbagai jenis surat administrasi non-akademik</p>
+
+  <div class="info">
+    <div>
+      <strong>Form Pengajuan Surat Cuti</strong>
+      <ul>
+        <strong>Persyaratan:</strong>
+        <li>Surat pengantar</li>
+        <li>Fotokopi KTM</li>
+        <li>Surat Permohonan</li>
+      </ul>
+    </div>
+
+    <div>
+      <strong>Waktu Proses:</strong>
+      <p>3–5 hari kerja</p>
+    </div>
+  </div>
+
+  <button onclick="showPage('pengajuan')">Ajukan Permohonan</button>
+</section>
+
+<!-- ================= FORM CUTI ================= -->
+<section id="pengajuan" class="card hidden">
+  <div class="breadcrumb">
+    Beranda / Surat Menyurat / Pengajuan Surat Cuti
+  </div>
+
+  <h2>Form Pengajuan Surat Cuti</h2>
+
+  <form id="formCuti">
+    <label>Nama Lengkap *</label>
+    <input type="text" id="nama">
+
+    <label>NIM *</label>
+    <input type="text" id="nim">
+
+    <label>Program Studi *</label>
+    <input type="text" id="prodi">
+
+    <label>Alasan Cuti *</label>
+    <textarea id="alasan"></textarea>
+
+    <label>Durasi Cuti *</label>
+    <select id="durasi">
+      <option value="">-- Pilih --</option>
+      <option>1 Semester</option>
+      <option>2 Semester</option>
+    </select>
+
+    <button type="submit">Kirim Pengajuan</button>
+  </form>
+
+  <p id="pesan"></p>
+</section>
+
+</main>
+
+<footer>
+  Referensi pengembangan fitur dan alur sistem ini mengacu pada  
+  Portal Layanan Mahasiswa FaSTI – Sistem Informasi Layanan Mahasiswa  
+  (fasti.roniwahyu.com)
+</footer>
+
+<script>
+function showPage(page) {
+  document.getElementById("beranda").classList.add("hidden");
+  document.getElementById("izin").classList.add("hidden");
+  document.getElementById("pengajuan").classList.add("hidden");
+
+  document.getElementById(page).classList.remove("hidden");
+}
+
+document.getElementById("formCuti").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  let nama = document.getElementById("nama").value;
+  let nim = document.getElementById("nim").value;
+  let prodi = document.getElementById("prodi").value;
+  let alasan = document.getElementById("alasan").value;
+  let durasi = document.getElementById("durasi").value;
+  let pesan = document.getElementById("pesan");
+
+  if (nama === "" || nim === "" || prodi === "" || alasan === "" || durasi === "") {
+    pesan.style.color = "red";
+    pesan.innerText = "❌ Semua field wajib diisi!";
+  } else {
+    pesan.style.color = "green";
+    pesan.innerText = "✅ Pengajuan surat cuti berhasil dikirim.";
+    document.getElementById("formCuti").reset();
+  }
+});
+</script>
+
+</body>
+</html>

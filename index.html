@@ -5,31 +5,52 @@
 <title>FaSTI - Sistem Administrasi Non-Akademik</title>
 
 <style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: Arial, sans-serif;
-  margin: 0;
   background: #eef1f4;
 }
 
+/* HEADER */
 header {
-  background: #2c3e50;
+  background: #1c25c1;
   color: white;
-  padding: 15px;
-  border-bottom: 1px solid #ddd;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-nav {
+header small {
+  display: block;
+  font-size: 13px;
+}
+
+header nav a {
+  color: white;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+/* NAV MENU */
+.menu {
   background: #f0f2f5;
-  padding: 10px;
+  padding: 10px 20px;
 }
 
-nav a {
+.menu a {
   margin-right: 15px;
   text-decoration: none;
   color: #333;
   cursor: pointer;
 }
 
+/* MAIN */
 main {
   padding: 20px;
 }
@@ -37,19 +58,20 @@ main {
 .card {
   background: #fff;
   padding: 20px;
-  border-radius: 6px;
+  border-radius: 8px;
   max-width: 750px;
   margin: auto;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 button {
   background: #4f46e5;
-  color: #fff;
+  color: white;
   border: none;
   padding: 10px 15px;
-  cursor: pointer;
   border-radius: 4px;
-  margin-top: 10px;
+  cursor: pointer;
+  margin-top: 15px;
 }
 
 button:hover {
@@ -57,8 +79,9 @@ button:hover {
 }
 
 label {
-  display: block;
   margin-top: 10px;
+  font-weight: bold;
+  display: block;
 }
 
 input, textarea, select {
@@ -79,13 +102,23 @@ textarea {
 .info {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin: 15px 0;
+}
+
+.info div {
+  width: 48%;
 }
 
 .hidden {
   display: none;
 }
 
+#pesan {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* FOOTER */
 footer {
   text-align: center;
   padding: 10px;
@@ -99,35 +132,34 @@ footer {
 <body>
 
 <!-- HEADER -->
-<header class="top-header">
-    <div class="logo">
-        <h2>FaSTI - Sistem Administrasi Non-Akademik</h2>
-        <small>Fakultas Sains dan Teknologi Informasi,</small>
-        <small>Universitas Widyagama Malang</small>
-    </div>
-    <nav>
-        <a href="#">Beranda</a>
-        <a href="#">Lacak Pengajuan</a>
-    </nav>
+<header>
+  <div class="logo">
+    <h2>FaSTI - Sistem Administrasi Non-Akademik</h2>
+    <small>Fakultas Sains dan Teknologi Informasi</small>
+    <small>Universitas Widyagama Malang</small>
+  </div>
+  <nav>
+    <a href="#">Beranda</a>
+    <a href="#">Lacak Pengajuan</a>
+  </nav>
 </header>
 
-<nav>
+<!-- MENU -->
+<div class="menu">
   <a onclick="showPage('beranda')">Beranda</a>
   <a onclick="showPage('izin')">Layanan</a>
-</nav>
+</div>
 
 <main>
 
-<!-- ================= BERANDA ================= -->
+<!-- BERANDA -->
 <section id="beranda" class="card">
   <h2>Selamat Datang</h2>
-  <p>
-    Portal layanan mahasiswa untuk pengajuan administrasi non-akademik.
-  </p>
+  <p>Portal layanan mahasiswa untuk pengajuan administrasi non-akademik.</p>
   <button onclick="showPage('izin')">Lihat Layanan</button>
 </section>
 
-<!-- ================= IZIN KEGIATAN ================= -->
+<!-- LAYANAN IZIN -->
 <section id="izin" class="card hidden">
   <div class="breadcrumb">
     Beranda / Surat Menyurat
@@ -138,25 +170,23 @@ footer {
 
   <div class="info">
     <div>
-      <strong>Form Pengajuan Surat Cuti</strong>
+      <strong>📄 Persyaratan:</strong>
       <ul>
-        <strong>Persyaratan:</strong>
-        <li>Surat pengantar</li>
+        <li>Surat permohonan cuti</li>
         <li>Fotokopi KTM</li>
-        <li>Surat Permohonan</li>
+        <li>Persetujuan orang tua</li>
       </ul>
     </div>
-
     <div>
-      <strong>Waktu Proses:</strong>
-      <p>3–5 hari kerja</p>
+      <strong>⏱ Waktu Proses:</strong>
+      <p>3 – 5 hari kerja</p>
     </div>
   </div>
 
   <button onclick="showPage('pengajuan')">Ajukan Permohonan</button>
 </section>
 
-<!-- ================= FORM CUTI ================= -->
+<!-- FORM PENGAJUAN -->
 <section id="pengajuan" class="card hidden">
   <div class="breadcrumb">
     Beranda / Surat Menyurat / Pengajuan Surat Cuti
@@ -173,6 +203,9 @@ footer {
 
     <label>Program Studi *</label>
     <input type="text" id="prodi">
+
+    <label>Semester *</label>
+    <input type="number" id="semester" min="1" max="14">
 
     <label>Alasan Cuti *</label>
     <textarea id="alasan"></textarea>
@@ -210,21 +243,29 @@ function showPage(page) {
 document.getElementById("formCuti").addEventListener("submit", function(e) {
   e.preventDefault();
 
-  let nama = document.getElementById("nama").value;
-  let nim = document.getElementById("nim").value;
-  let prodi = document.getElementById("prodi").value;
-  let alasan = document.getElementById("alasan").value;
-  let durasi = document.getElementById("durasi").value;
-  let pesan = document.getElementById("pesan");
+  const nama = document.getElementById("nama").value.trim();
+  const nim = document.getElementById("nim").value.trim();
+  const prodi = document.getElementById("prodi").value.trim();
+  const semester = document.getElementById("semester").value;
+  const alasan = document.getElementById("alasan").value.trim();
+  const durasi = document.getElementById("durasi").value;
+  const pesan = document.getElementById("pesan");
 
-  if (nama === "" || nim === "" || prodi === "" || alasan === "" || durasi === "") {
+  if (!nama || !nim || !prodi || !semester || !alasan || !durasi) {
     pesan.style.color = "red";
     pesan.innerText = "❌ Semua field wajib diisi!";
-  } else {
-    pesan.style.color = "green";
-    pesan.innerText = "✅ Pengajuan surat cuti berhasil dikirim.";
-    document.getElementById("formCuti").reset();
+    return;
   }
+
+  if (!/^\d{9,10}$/.test(nim)) {
+    pesan.style.color = "red";
+    pesan.innerText = "❌ NIM harus berupa angka 9–10 digit!";
+    return;
+  }
+
+  pesan.style.color = "green";
+  pesan.innerText = "✅ Pengajuan surat cuti berhasil dikirim.";
+  this.reset();
 });
 </script>
 
